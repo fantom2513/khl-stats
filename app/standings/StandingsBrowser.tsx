@@ -38,15 +38,26 @@ type SortKey =
 
 type SortState = { key: SortKey; dir: "asc" | "desc" };
 
-function sortTeams(teams: StandingsTeam[], sort: SortState | null): StandingsTeam[] {
-  if (!sort) return teams;
+function sortTeams(
+  teams: StandingsTeam[],
+  sort: SortState | null,
+  rankById: Map<number, number>,
+): StandingsTeam[] {
+  const rankOf = (team: StandingsTeam) => rankById.get(team.id) ?? team.rank;
+
+  // без сортировки и при сортировке по "#" — строго по рангу из общей таблицы
+  if (!sort || sort.key === "rank") {
+    const factor = sort?.dir === "desc" ? -1 : 1;
+    return [...teams].sort((a, b) => factor * (rankOf(a) - rankOf(b)));
+  }
+
   const factor = sort.dir === "asc" ? 1 : -1;
   return [...teams].sort((a, b) => {
     if (sort.key === "name") return factor * a.name.localeCompare(b.name, "ru");
     if (sort.key === "goalsForAverage") return factor * (avg(a.goalsFor, a.gamesPlayed) - avg(b.goalsFor, b.gamesPlayed));
     if (sort.key === "goalsAgainstAverage") return factor * (avg(a.goalsAgainst, a.gamesPlayed) - avg(b.goalsAgainst, b.gamesPlayed));
-    const av = a[sort.key as Exclude<SortKey, "name" | "goalsForAverage" | "goalsAgainstAverage">];
-    const bv = b[sort.key as Exclude<SortKey, "name" | "goalsForAverage" | "goalsAgainstAverage">];
+    const av = a[sort.key as Exclude<SortKey, "name" | "rank" | "goalsForAverage" | "goalsAgainstAverage">];
+    const bv = b[sort.key as Exclude<SortKey, "name" | "rank" | "goalsForAverage" | "goalsAgainstAverage">];
     return factor * (Number(av) - Number(bv));
   });
 }
@@ -58,6 +69,8 @@ const DIVISION_ORDER = [
   "Дивизион Боброва",
   "Дивизион Тарасова",
 ];
+
+
 
 function orderIndex(list: string[], value: string): number {
   const index = list.indexOf(value);
@@ -77,6 +90,16 @@ export function StandingsBrowser({ standings }: { standings: StandingsData }) {
   const [sort, setSort] = useState<SortState | null>(null);
 
   const conferenceGroups = useMemo(() => standings.conferenceGroups, [standings.conferenceGroups]);
+
+  const rankById = useMemo(
+    () => new Map(standings.overall.teams.map((team) => [team.id, team.rank] as const)),
+    [standings.overall.teams],
+  );
+
+  function groupPosition(group: StandingsGroup, team: StandingsTeam): number {
+    if (view === "overall") return team.rank;
+    return sortTeams(group.teams, null, rankById).findIndex((t) => t.id === team.id) + 1;
+  }
 
   const groups: StandingsGroup[] = sortGroups(view === "overall" ? [standings.overall] : view === "conference" ? conferenceGroups : standings.groups);
 
@@ -175,9 +198,9 @@ export function StandingsBrowser({ standings }: { standings: StandingsData }) {
                   </tr>
                 </thead>
                 <tbody>
-                  {sortTeams(group.teams, sort).map((team) => (
+                  {sortTeams(group.teams, sort, rankById).map((team) => (
                     <tr key={team.id} className="khl-standings-row" style={{ borderTop: `1px solid ${colors.borderSoft}` }}>
-                      <td style={{ ...styles.rankCell, color: team.playoff ? colors.text : colors.muted }}>{team.rank}</td>
+                      <td style={{ ...styles.rankCell, color: team.playoff ? colors.text : colors.muted }}>{groupPosition(group, team)}</td>
                       <td style={styles.teamCell}>
                         <Link
                           href={`/team/${team.id}`}
