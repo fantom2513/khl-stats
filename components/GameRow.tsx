@@ -165,7 +165,7 @@ export function GameRow({
             {game.status === "FINISHED" && (
               <span style={{ position: "relative", display: "flex", flexDirection: "column", alignItems: "center" }}>
                 <span style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "1.4rem", color: colors.text }}>
-                  {game.homeScore}:{game.visitorScore}
+                  {game.homeScore} : {game.visitorScore}
                 </span>
                 {ot && (
                   <span
