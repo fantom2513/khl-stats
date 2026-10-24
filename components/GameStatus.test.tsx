@@ -23,3 +23,7 @@ test("a live intermission keeps the source status visible", () => {
   const html = renderToStaticMarkup(<GameStatus game={{ ...base, status: "LIVE", homeScore: 0, visitorScore: 0, liveStatus: "Перерыв", livePeriod: 1, liveClock: "20:00" }} />);
   assert.match(html, /Перерыв/);
 });
+test("the period from the source is not repeated by the numeric fallback", () => {
+  const html = renderToStaticMarkup(<GameStatus game={{ ...base, status: "LIVE", liveStatus: "1 период", livePeriod: 1 }} />);
+  assert.equal(html.match(/1 период/g)?.length, 1);
+});

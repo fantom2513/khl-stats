@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import type { Game } from "./types";
-import { motionProgress, selectFeaturedGame } from "./schedule-presentation";
+import { motionProgress, selectFeaturedGame, nearestMatchDay } from "./schedule-presentation";
 
 function game(id: number, status: Game["status"]): Game {
   return { id, status, date: "2026-10-24T11:30:00.000Z", timeFormat: "14:30", homeScore: null, visitorScore: null, overtime: null, teamA: { id: 1, name: "А", logoUrl: null }, teamB: { id: 2, name: "Б", logoUrl: null } };
@@ -30,4 +30,11 @@ test("scroll progress is clamped before and after the scene", () => {
 
 test("an unscrollable scene never produces invalid transforms", () => {
   assert.equal(motionProgress(100, 0, 0), 0);
+});
+test("nearest matches use their calendar date rather than midnight shifted to the previous UTC date", () => {
+  const supplied = [game(1, "SCHEDULED")];
+  assert.equal(nearestMatchDay("2026-10-23T21:00:00.000Z", supplied), "2026-10-24");
+});
+test("an empty nearest day keeps the supplied date as fallback", () => {
+  assert.equal(nearestMatchDay("2026-10-24T00:00:00.000Z", []), "2026-10-24");
 });
