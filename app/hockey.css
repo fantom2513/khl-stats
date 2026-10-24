@@ -1,5 +1,6 @@
 /* Shared editorial system: quiet surfaces, large type, restrained club reference. */
 :root { --gutter: clamp(16px, 2vw, 32px); --red: #c63a4a; }
+.local-demo-note { position: fixed; right: 12px; bottom: 12px; z-index: 30; padding: 8px 12px; border: 1px solid #ffffff45; background: #181818ed; color: #d9dcd4; font: 10px/1.5 var(--font-body), sans-serif; pointer-events: none; }
 html { scroll-padding-top: 20px; }
 body { margin: 0; }
 button, input { font: inherit; }

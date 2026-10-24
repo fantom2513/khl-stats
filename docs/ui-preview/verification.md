@@ -1,5 +1,15 @@
 # Redesign verification
 
+## Working local application
+
+The user subsequently requested a fully navigable localhost without external database access. `npm run dev:demo` now runs the actual Next server at `http://127.0.0.1:3000`. Its server-side read queries are intercepted by an explicitly opt-in, development-only Prisma extension backed by in-memory demo data; the UI and API routes are unchanged. This supersedes the isolated HTML harness as the preferred interactive preview.
+
+28 unit/render/integration checks pass, TypeScript passes, and lint has only the same six existing warnings. `node dev/smoke-local-demo.mjs` passes against the running Next server: distinct October/January schedules, team filter, past results, 22 teams/two conferences/four divisions, game/team/standings routes and not-found results. Browser clicks additionally verified main → game → team → schedule and navigating forward to January. The local timezone check exposed duplicate nearest-day rows; the nearest-game calendar date now avoids UTC-midnight mismatch. Supplied live period text is no longer repeated by its numeric fallback.
+
+The local mode cannot be enabled in production or on Vercel, refuses writes and uses no real credentials. It has a fixed live scenario and illustrative scores; it does not test database I/O or scraping. Full production build with real database access is still unverified.
+
+## Earlier isolated component preview
+
 Screenshots show the actual React components with explicit test fixtures, not production data.
 
 - `npm test`: 19 passing checks. Sort cycles, stable source ranks, averages/zero games, grouping, featured-game selection, clamped motion progress, scheduled/live/finished/unknown scores, shootouts, intermission status and upcoming team ranks.

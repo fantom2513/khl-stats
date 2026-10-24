@@ -11,6 +11,7 @@ import type { Game, StandingsData } from "@/lib/types";
 import { dayKey, formatDayHeading } from "@/lib/format";
 import { currentMonthKey, formatMonthLabel, parseTimeMinutes, shiftMonthKey } from "@/lib/schedule";
 import { colors } from "@/lib/theme";
+import { nearestMatchDay } from "@/lib/schedule-presentation";
 
 const TEAM_FILTER_KEY = "khl-team-filter";
 
@@ -261,7 +262,7 @@ function HomeContent({
     return () => window.clearInterval(timer);
   }, []);
 
-  const nearestDayKey = useMemo(() => dayKey(nearest.date), [nearest.date]);
+  const nearestDayKey = useMemo(() => nearestMatchDay(nearest.date, nearest.games), [nearest.date, nearest.games]);
 
   // Клиентская фильтрация по команде — как в main
   const filteredGames = useMemo(() => {

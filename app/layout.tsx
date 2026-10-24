@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { Golos_Text, Oswald } from "next/font/google";
 import { colors } from "@/lib/theme";
+import { localDemoEnabled } from "@/lib/local-demo";
 import "./globals.css";
 
 const bodyFont = Golos_Text({
@@ -59,7 +60,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           }
         `}</style>
       </head>
-      <body>{children}</body>
+      <body>{children}{localDemoEnabled() && <aside className="local-demo-note" role="status">Локальный режим · тестовые матчи и счёт</aside>}</body>
     </html>
   );
 }

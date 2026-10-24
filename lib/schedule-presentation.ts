@@ -1,4 +1,9 @@
 import type { Game } from "./types";
+import { dayKey } from "./format";
+
+export function nearestMatchDay(date: string, games: Game[]): string {
+  return dayKey(games[0]?.date ?? date);
+}
 
 export function selectFeaturedGame(games: Game[]): Game | undefined {
   return games.find(game => game.status === "LIVE")
