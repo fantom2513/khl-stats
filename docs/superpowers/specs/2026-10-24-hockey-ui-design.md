@@ -30,4 +30,3 @@ Use Node's test runner with the existing tsx dependency for behaviour at the sta
 # Follow-up: hero uniform
 
 The user requested a stronger Avangard forward reference during final verification: red shoulder panels, sleeve/hem bands and a hawk crest, with the approved face, pose and dark arena preserved.
-
