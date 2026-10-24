@@ -27,3 +27,7 @@ We compared a typographic poster, a pale ice layout and a dimensional arena. The
 ## Verification
 
 Use Node's test runner with the existing tsx dependency for behaviour at the standings sorting and schedule-presentation interfaces. Verify live/finished/empty game rendering, group ranks and averages, preserved sort scroll position, complete headline exit, responsive spacing, keyboard navigation and reduced motion. Run lint, TypeScript and a production build; disclose any environment limitations accurately.
+# Follow-up: hero uniform
+
+The user requested a stronger Avangard forward reference during final verification: red shoulder panels, sleeve/hem bands and a hawk crest, with the approved face, pose and dark arena preserved.
+
