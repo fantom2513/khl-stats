@@ -32,3 +32,8 @@ test("a team without stats or matches has readable empty states", () => {
   const html = renderToStaticMarkup(<TeamDetailsView team={games[0].teamA} upcoming={[]} past={[]} />);
   assert.ok(html.includes("Статистика пока недоступна") && html.includes("Нет прошедших матчей") && html.includes("Нет предстоящих матчей") && !html.includes("NaN"));
 });
+test("a goal with a null period keeps the missing-period label", () => {
+  const game = { ...games[3], liveEvents: [{ period: null, time: "02:15", team: "home", scorer: "Иван Иванов" }] };
+  const html = renderToStaticMarkup(<GameDetailsView game={game} standings={standings.teamsById} recentA={[]} recentB={[]} />);
+  assert.ok(html.includes("Период не указан") && !html.includes("null-й период"));
+});
