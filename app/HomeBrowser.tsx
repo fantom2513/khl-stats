@@ -2,14 +2,16 @@
 
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
-import Link from "next/link";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
-import { GameRow } from "@/components/GameRow";
+import { ScheduleGameRow } from "@/components/ScheduleGameRow";
+import { ScheduleHero } from "@/components/ScheduleHero";
+import { SiteHeader } from "@/components/SiteHeader";
 import { TeamLogo } from "@/components/TeamLogo";
 import type { Game, StandingsData } from "@/lib/types";
 import { dayKey, formatDayHeading } from "@/lib/format";
 import { currentMonthKey, formatMonthLabel, parseTimeMinutes, shiftMonthKey } from "@/lib/schedule";
 import { colors } from "@/lib/theme";
+import { nearestMatchDay } from "@/lib/schedule-presentation";
 
 const TEAM_FILTER_KEY = "khl-team-filter";
 
@@ -120,6 +122,7 @@ function HomeContent({
   const inputRef = useRef<HTMLInputElement>(null);
 
   const showNearest = tab === "upcoming" && month === currentMonthKey() && selectedTeamId === null;
+  const CalendarHeading = showNearest ? "h2" : "h1";
 
   function setUrl(nextTab: Tab, nextMonth: string) {
     const params = new URLSearchParams({ tab: nextTab, month: nextMonth });
@@ -187,7 +190,7 @@ function HomeContent({
       isInitialMount.current = false;
       return;
     }
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    document.getElementById("schedule")?.scrollIntoView({ behavior: "instant" });
   }, [tab, month, selectedTeamId]);
 
   useEffect(() => {
@@ -259,7 +262,7 @@ function HomeContent({
     return () => window.clearInterval(timer);
   }, []);
 
-  const nearestDayKey = useMemo(() => dayKey(nearest.date), [nearest.date]);
+  const nearestDayKey = useMemo(() => nearestMatchDay(nearest.date, nearest.games), [nearest.date, nearest.games]);
 
   // Клиентская фильтрация по команде — как в main
   const filteredGames = useMemo(() => {
@@ -273,7 +276,7 @@ function HomeContent({
     const map = new Map<string, Game[]>();
     for (const game of filteredGames) {
       const key = dayKey(game.date);
-      if (showNearest && key === nearestDayKey) continue;
+      if (showNearest && nearest.games.length > 0 && key === nearestDayKey) continue;
       if (!map.has(key)) map.set(key, []);
       map.get(key)!.push(game);
     }
@@ -281,7 +284,7 @@ function HomeContent({
       date,
       [...dayGames].sort((a, b) => parseTimeMinutes(a.timeFormat) - parseTimeMinutes(b.timeFormat)),
     ] as [string, Game[]]);
-  }, [filteredGames, showNearest, nearestDayKey]);
+  }, [filteredGames, showNearest, nearestDayKey, nearest.games.length]);
 
   const menuTeams = useMemo(() => {
     const q = teamQuery.trim().toLowerCase();
@@ -333,54 +336,18 @@ function HomeContent({
   );
 
   return (
-    <main style={styles.page}>
-      <header style={styles.topbar}>
-        <style>{`
-          @keyframes khl-skeleton-pulse {
-            0%, 100% { opacity: 0.45; }
-            50% { opacity: 0.85; }
-          }
-          .khl-filter-item {
-            padding: 0.5rem 0.8rem;
-            transition: background-color 0.15s ease, padding-left 0.15s ease, color 0.15s ease;
-          }
-          .khl-filter-item:hover {
-            background: ${colors.accent}1A;
-            padding-left: 1.05rem;
-          }
-        `}</style>
-        <Link href="/" style={styles.wordmark}>Расписание КХЛ</Link>
-        <Link
-          href="/standings"
-          style={{ ...styles.standingsLink, ...(hoveredNav === "standings" ? styles.standingsLinkHover : {}) }}
-          onMouseEnter={() => setHoveredNav("standings")}
-          onMouseLeave={() => setHoveredNav(null)}
-        >
-          Таблица
-        </Link>
-      </header>
-
-      {showNearest && (
-        <section style={styles.nearestSection}>
-          <span style={styles.nearestBadge}>
-            {nearest.day === "today" ? "Сегодня" : "Завтра"} {formatDayHeading(nearest.date)}
-          </span>
-          {nearest.games.length === 0 && (
-            <p style={styles.emptyBody}>На {nearest.day === "today" ? "сегодня" : "завтра"} матчей не запланировано.</p>
-          )}
-          {nearest.games.map((game) => (
-            <div key={game.id} style={styles.nearestRow}>
-              <GameRow game={game} standings={standings} compactStats showStats />
-            </div>
-          ))}
-        </section>
-      )}
-
-      <div style={styles.controlsRow}>
+    <main style={styles.page} className="schedule-page">
+      <a className="skip-link" href="#schedule">К расписанию</a>
+      {showNearest ? <ScheduleHero date={nearest.date} games={nearest.games} /> : <SiteHeader />}
+      <section id="schedule" className="calendar-section" aria-labelledby="calendar-heading">
+      <div className="calendar-heading"><CalendarHeading id="calendar-heading">{tab === "past" ? <>ТАК БЫЛО.<br />НА ЛЬДУ.</> : <>ДАЛЬШЕ<br /><span>НА ЛЬДУ.</span></>}</CalendarHeading><p>Регулярный чемпионат<br />Время начала — московское</p></div>
+      <div className="calendar-controls">
         {/* Фильтр по команде — разметка и поведение из main (левая колонка) */}
         <div style={styles.filterCell}>
           <div style={styles.filterWrap}>
             <input
+              aria-label="Фильтр матчей по команде"
+              aria-controls="team-filter-menu"
               ref={inputRef}
               value={inputValue}
               onChange={(e) => {
@@ -410,7 +377,7 @@ function HomeContent({
             )}
 
             {teamMenuOpen && (
-              <div style={styles.filterMenu} className="khl-filter-menu">
+              <div id="team-filter-menu" style={styles.filterMenu} className="khl-filter-menu">
                 {menuTeams.map((team) => (
                   <button
                     key={team.id}
@@ -437,6 +404,7 @@ function HomeContent({
           {TABS.map((item) => (
             <button
               key={item.key}
+              aria-pressed={tab === item.key}
               onClick={() => switchTab(item.key)}
               onMouseEnter={() => setHoveredNav(item.key)}
               onMouseLeave={() => setHoveredNav(null)}
@@ -476,9 +444,9 @@ function HomeContent({
               <section style={styles.list}>
                 {grouped.map(([date, dayGames]) => (
                   <div key={date} style={{ marginTop: "1.5rem" }}>
-                    <div style={styles.dayHeading}>{formatDayHeading(date)}</div>
+                    <h3 className="schedule-day">{formatDayHeading(date)}</h3>
                     {dayGames.map((game) => (
-                      <GameRow key={game.id} game={game} standings={standings} compactStats={tab === "upcoming"} showStats={tab === "upcoming"} />
+                      <ScheduleGameRow key={game.id} game={game} standings={standings} showStats={tab === "upcoming"} />
                     ))}
                   </div>
                 ))}
@@ -489,56 +457,14 @@ function HomeContent({
       }
 
       {pagination()}
+      <footer className="schedule-footer"><span>Время начала матчей — московское.<br />Статистика обновляется автоматически.</span><a href="#schedule">НА ЛЬДУ. ↑</a></footer>
+      </section>
     </main >
   );
 }
 
 const styles: Record<string, CSSProperties> = {
   page: { minHeight: "100vh", background: colors.bg, color: colors.text, fontFamily: "var(--font-body)", fontSize: "1.05rem", paddingBottom: "4rem" },
-  topbar: { padding: "1.5rem clamp(1.25rem, 5vw, 3rem) 1rem", borderBottom: `1px solid ${colors.border}`, display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", gap: "1rem" },
-  wordmark: { fontFamily: "var(--font-display)", fontWeight: 600, fontSize: "1.1rem", letterSpacing: "0.04em", color: colors.muted },
-  standingsLink: {
-    color: colors.accent,
-    fontFamily: "var(--font-display)",
-    fontSize: "0.95rem",
-    padding: "0.5rem 0.7rem",
-    textDecoration: "none",
-    transition: "opacity 0.18s ease",
-  },
-  standingsLinkHover: { opacity: 0.7 },
-
-  nearestSection: {
-    margin: "1.5rem clamp(1.25rem, 5vw, 3rem) 0",
-    padding: "1.25rem 1.5rem 1.5rem",
-    borderRadius: "16px",
-    border: `1px solid ${colors.accent}`,
-    background: `color-mix(in srgb, ${colors.accent} 8%, ${colors.bg})`,
-    textAlign: "center",
-  },
-  nearestBadge: {
-    display: "inline-block",
-    fontFamily: "var(--font-display)",
-    fontSize: "0.72rem",
-    fontWeight: 700,
-    letterSpacing: "0.06em",
-    textTransform: "uppercase",
-    color: colors.bg,
-    background: colors.accent,
-    borderRadius: "999px",
-    padding: "0.25rem 0.65rem",
-    marginBottom: "1rem",
-  },
-  nearestTitle: {
-    fontFamily: "var(--font-display)",
-    fontWeight: 600,
-    fontSize: "1.1rem",
-    marginBottom: "0.75rem",
-    color: colors.text,
-  },
-  nearestRow: {
-    borderBottom: `1px solid ${colors.border}`
-  },
-
   // Стили фильтра — из main (теперь в левой колонке строки управления)
   filterCell: {
     display: "flex",
@@ -565,7 +491,7 @@ const styles: Record<string, CSSProperties> = {
     paddingBottom: 0,
     paddingLeft: "0.9rem",
     paddingRight: "0.9rem",
-    borderRadius: "999px",
+    borderRadius: 0,
     borderWidth: "1px",
     borderStyle: "solid",
     borderColor: colors.border,
@@ -579,7 +505,7 @@ const styles: Record<string, CSSProperties> = {
     fontSize: "0.8rem",
     height: "2.5rem",     // такая же высота, как у поля
     padding: "0 0.9rem",
-    borderRadius: "999px",
+    borderRadius: 0,
     border: `1px solid ${colors.border}`,
     background: "transparent",
     color: colors.muted,
@@ -588,22 +514,12 @@ const styles: Record<string, CSSProperties> = {
     whiteSpace: "nowrap",
   },
   filterInputWithCount: { paddingRight: "5.5rem" },
-  filterMenu: { position: "absolute", top: "calc(100% + 4px)", left: 0, right: 0, maxHeight: "280px", overflowY: "auto", background: colors.bg, border: `1px solid ${colors.border}`, borderRadius: "12px", boxShadow: "0 8px 24px rgba(0,0,0,0.25)", zIndex: 10 },
+  filterMenu: { position: "absolute", top: "calc(100% + 4px)", left: 0, right: 0, maxHeight: "280px", overflowY: "auto", background: colors.bg, border: `1px solid ${colors.border}`, borderRadius: 0, boxShadow: "0 8px 24px rgba(0,0,0,0.25)", zIndex: 10 },
   filterMenuItem: { display: "flex", alignItems: "center", gap: "0.6rem", width: "100%", padding: "0.5rem 0.8rem", background: "transparent", border: "none", color: colors.text, cursor: "pointer", textAlign: "left", fontSize: "0.95rem", transition: "background-color 0.15s ease, padding-left 0.15s ease" },
   filterMenuItemActive: { background: `${colors.accent}22` },
   filterMenuEmpty: { padding: "0.7rem 0.9rem", color: colors.muted, fontSize: "0.9rem" },
   filterCount: { position: "absolute", right: "0.9rem", top: "50%", transform: "translateY(-50%)", color: colors.muted, fontSize: "0.75rem", fontFamily: "var(--font-display)", whiteSpace: "nowrap", pointerEvents: "none" },
 
-  controlsRow: {
-    display: "grid",
-    gridTemplateColumns: "1fr auto 1fr",
-    alignItems: "center",
-    gap: "1rem",
-    paddingTop: "1.5rem",
-    paddingBottom: "1.5rem",
-    paddingLeft: "clamp(1.25rem, 5vw, 3rem)",
-    paddingRight: "clamp(1.25rem, 5vw, 3rem)",
-  },
   tabs: { display: "flex", gap: "0.4rem", alignItems: "center", justifySelf: "end" },
   tabButton: {
     fontFamily: "var(--font-display)",
@@ -611,7 +527,7 @@ const styles: Record<string, CSSProperties> = {
     fontWeight: 500,
     lineHeight: 1,
     padding: "0.6rem 1.1rem",
-    borderRadius: "999px",
+    borderRadius: 0,
     borderWidth: "1px",
     borderStyle: "solid",
     borderColor: colors.border,
@@ -627,14 +543,6 @@ const styles: Record<string, CSSProperties> = {
   emptyTitle: { fontFamily: "var(--font-display)", fontSize: "1.35rem", fontWeight: 600, margin: "0 0 0.4rem", textAlign: "center" },
   emptyBody: { color: colors.muted, margin: 0, fontSize: "1.05rem", textAlign: "center" },
   list: {},
-  dayHeading: {
-    fontFamily: "var(--font-display)",
-    fontSize: "0.9rem",
-    fontWeight: 600,
-    letterSpacing: "0.03em",
-    color: colors.muted,
-    textAlign: "center",
-  },
   pagination: { display: "flex", alignItems: "center", justifyContent: "center", gap: "1rem", padding: "2rem clamp(1.25rem, 5vw, 3rem) 0" },
   paginationInline: { display: "flex", alignItems: "center", gap: "0.75rem", justifySelf: "center", gridColumn: 2 },
   pageButton: {
@@ -643,7 +551,7 @@ const styles: Record<string, CSSProperties> = {
     fontWeight: 500,
     lineHeight: 1,
     padding: "0.6rem 1.1rem",
-    borderRadius: "6px",
+    borderRadius: 0,
     border: `1px solid ${colors.border}`,
     background: "transparent",
     color: colors.text,

@@ -1,10 +1,12 @@
 @import "tailwindcss";
+@import "./hockey.css";
 
 :root {
-  --background: #0b111b;
-  --foreground: #e7eef5;
-  --font-body: "Inter", "Segoe UI", "Arial", sans-serif;
-  --font-display: "Inter Tight", "Segoe UI", "Arial", sans-serif;
+  --background: #101010;
+  --foreground: #f3f3ed;
+  --scroll-thumb: #444;
+  --scroll-thumb-hover: #777;
+  --khl-accent: #efefe8;
 }
 
 @theme inline {
