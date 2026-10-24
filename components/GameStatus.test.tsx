@@ -19,3 +19,7 @@ test("an unknown score is not presented as zero", () => {
 test("a finished shootout remains identifiable", () => {
   assert.match(renderToStaticMarkup(<GameStatus game={{ ...base, status: "FINISHED", homeScore: 3, visitorScore: 2, overtime: "SO" }} />), /3 : 2.*Завершён.*Б/);
 });
+test("a live intermission keeps the source status visible", () => {
+  const html = renderToStaticMarkup(<GameStatus game={{ ...base, status: "LIVE", homeScore: 0, visitorScore: 0, liveStatus: "Перерыв", livePeriod: 1, liveClock: "20:00" }} />);
+  assert.match(html, /Перерыв/);
+});
