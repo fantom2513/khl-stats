@@ -8,7 +8,7 @@ import { GameStatus } from "./GameStatus";
 import { MatchHistory } from "./MatchHistory";
 import { TeamComparison } from "./TeamComparison";
 
-type GoalEvent = { period?: number; time?: string; team?: string; scorer?: string; assists?: string[]; score?: string };
+type GoalEvent = { period?: number | null; time?: string; team?: string; scorer?: string; assists?: string[]; score?: string };
 type Props = {
   game: Game;
   stage?: { type: string; name: string | null } | null;
@@ -18,8 +18,8 @@ type Props = {
   recentB: Game[];
 };
 
-function periodName(period: number | undefined, playoff: boolean): string {
-  if (period === undefined) return "Период не указан";
+function periodName(period: number | null | undefined, playoff: boolean): string {
+  if (period == null) return "Период не указан";
   if (period <= 3) return `${period}-й период`;
   if (playoff) return `${period - 3}-й овертайм`;
   return period === 4 ? "Овертайм" : "Буллиты";
@@ -42,7 +42,7 @@ export function GameDetailsView({ game, stage, liveClock, standings, recentA, re
   const displayGame = { ...game, liveClock: intermission ? null : liveClock ?? game.liveClock };
   const overtime = overtimeLabel(game.overtime);
   return <>
-    <a className="skip-link" href="#match-details">К матчу</a><SiteHeader />
+    <a className="skip-link" href="#match-details">К матчу</a><SiteHeader active={null} />
     <main id="match-details" className="details-page game-details-page">
       <div className="details-breadcrumb"><Link href="/#schedule">← Расписание</Link><span>{stage?.name || "Регулярный чемпионат КХЛ"}</span></div>
       <h1 className="sr-only">{game.teamA.name} — {game.teamB.name}</h1>

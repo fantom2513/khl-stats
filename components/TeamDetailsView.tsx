@@ -7,7 +7,7 @@ import { MatchHistory } from "./MatchHistory";
 
 export function TeamDetailsView({ team, stats, upcoming, past }: { team: Team; stats?: StandingsTeam; upcoming: Game[]; past: Game[] }) {
   return <>
-    <a className="skip-link" href="#team-details">К команде</a><SiteHeader />
+    <a className="skip-link" href="#team-details">К команде</a><SiteHeader active={null} />
     <main id="team-details" className="details-page team-details-page">
       <div className="details-breadcrumb"><Link href="/#schedule">← Расписание</Link><Link href="/standings">Все команды ↗</Link></div>
       <header className="team-identity">

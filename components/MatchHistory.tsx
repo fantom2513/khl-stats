@@ -7,7 +7,7 @@ import { GameStatus } from "./GameStatus";
 export function MatchHistory({ games, emptyText }: { games: Game[]; emptyText: string }) {
   if (!games.length) return <p className="details-empty">{emptyText}</p>;
   return <div className="match-history">
-    {games.map(game => <Link key={game.id} href={`/game/${game.id}`} className="history-match">
+    {games.map(game => <Link key={game.id} href={`/game/${game.id}`} className={`history-match${game.status === "SCHEDULED" && !game.timeFormat ? " time-pending" : ""}`}>
       <time dateTime={game.date}>{formatShortDate(game.date)}</time>
       <span className="history-club"><TeamLogo team={game.teamA} size={28} ring={false} /><span>{game.teamA.name}</span></span>
       <GameStatus game={game} />
