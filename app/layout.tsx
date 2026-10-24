@@ -4,6 +4,7 @@ import { Golos_Text, Oswald } from "next/font/google";
 import { colors } from "@/lib/theme";
 import { localDemoEnabled } from "@/lib/local-demo";
 import "./globals.css";
+import "./details.css";
 
 const bodyFont = Golos_Text({
   subsets: ["latin", "cyrillic"],

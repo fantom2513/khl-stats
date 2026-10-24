@@ -1,5 +1,16 @@
 # Redesign verification
 
+## Match and team pages
+
+Both detail routes now use the same visual system as the homepage and standings. Gradient panels and logo rings have been removed; the match score is primary, histories are compact dated links, team season stats and the full 15-column comparison are available in native disclosure sections. Existing server queries and live refresh remain in place.
+
+33 tests pass, including new rendered-view checks for live zero scores/intermission, hidden stale intermission clock, scheduled comparison columns, playoff overtime periods, goal scorers/assists, team season metrics, links and empty states. TypeScript passes; ESLint has five existing warnings in the untouched worker (the old unused variable in the replaced match markup disappeared). The real Next HTTP smoke check still passes. Browser checks cover the live match → team route, comparison disclosure with 15 columns/two rows, season disclosure via Enter and 390px iframe layouts for both actual application routes.
+
+![Match page](match.png)
+![Team page](team.png)
+![Match at 390px](match-mobile.png)
+![Team at 390px](team-mobile.png)
+
 ## Working local application
 
 The user subsequently requested a fully navigable localhost without external database access. `npm run dev:demo` now runs the actual Next server at `http://127.0.0.1:3000`. Its server-side read queries are intercepted by an explicitly opt-in, development-only Prisma extension backed by in-memory demo data; the UI and API routes are unchanged. This supersedes the isolated HTML harness as the preferred interactive preview.

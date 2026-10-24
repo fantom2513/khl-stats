@@ -24,6 +24,10 @@ We compared a typographic poster, a pale ice layout and a dimensional arena. The
 - Reduced motion shows a normal vertical nearest-game list. Keyboard users can skip directly to the schedule and reveal offscreen rail links on focus.
 - Portrait is a local optimised asset; no user-uploaded source photo is committed.
 
+## Follow-up: match and team pages
+
+The user explicitly expanded the redesign to `/game/[id]` and `/team/[id]` after seeing the old match page. Use the same dark editorial typography and shared navigation, remove the gradient panels and logo rings, give the match score clear priority and show history as compact dated rows. Preserve live refresh, team/game/calendar links, all 15 comparison columns, period scores and overtime/shootout labels, goal scorers and assists, complete team season statistics and readable empty states. Keep server queries and external synchronization unchanged. Verify the actual Next routes and a 390px viewport, then update the existing upstream PR in concise Russian.
+
 ## Verification
 
 Use Node's test runner with the existing tsx dependency for behaviour at the standings sorting and schedule-presentation interfaces. Verify live/finished/empty game rendering, group ranks and averages, preserved sort scroll position, complete headline exit, responsive spacing, keyboard navigation and reduced motion. Run lint, TypeScript and a production build; disclose any environment limitations accurately.
