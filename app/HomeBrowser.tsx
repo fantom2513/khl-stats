@@ -121,6 +121,7 @@ function HomeContent({
   const inputRef = useRef<HTMLInputElement>(null);
 
   const showNearest = tab === "upcoming" && month === currentMonthKey() && selectedTeamId === null;
+  const CalendarHeading = showNearest ? "h2" : "h1";
 
   function setUrl(nextTab: Tab, nextMonth: string) {
     const params = new URLSearchParams({ tab: nextTab, month: nextMonth });
@@ -338,7 +339,7 @@ function HomeContent({
       <a className="skip-link" href="#schedule">К расписанию</a>
       {showNearest ? <ScheduleHero date={nearest.date} games={nearest.games} /> : <SiteHeader />}
       <section id="schedule" className="calendar-section" aria-labelledby="calendar-heading">
-      <div className="calendar-heading"><h2 id="calendar-heading">{tab === "past" ? <>ТАК БЫЛО.<br />НА ЛЬДУ.</> : <>ДАЛЬШЕ<br /><span>НА ЛЬДУ.</span></>}</h2><p>Регулярный чемпионат<br />Время начала — московское</p></div>
+      <div className="calendar-heading"><CalendarHeading id="calendar-heading">{tab === "past" ? <>ТАК БЫЛО.<br />НА ЛЬДУ.</> : <>ДАЛЬШЕ<br /><span>НА ЛЬДУ.</span></>}</CalendarHeading><p>Регулярный чемпионат<br />Время начала — московское</p></div>
       <div className="calendar-controls">
         {/* Фильтр по команде — разметка и поведение из main (левая колонка) */}
         <div style={styles.filterCell}>
