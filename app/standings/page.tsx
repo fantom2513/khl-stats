@@ -9,11 +9,8 @@ export default async function StandingsPage() {
 
   return (
     <><a className="skip-link" href="#standings">К таблице</a><SiteHeader active="standings" />
-    <main id="standings" className="standings-page">
-      <header className="standings-heading">
-        <div><p className="eyebrow">Регулярный чемпионат КХЛ</p><h1>РАСКЛАД<br /><span>СИЛ.</span></h1></div>
-        <p>{standings.overall.teams.length} команд.<br />Каждое очко имеет вес.</p>
-      </header>
+    <main id="standings" className="flow-main league-page">
+      <header className="league-heading"><span>КХЛ · Регулярный чемпионат</span><h1>Турнирная таблица</h1><p>Положение команд и статистика сезона</p></header>
       <StandingsBrowser standings={standings} />
     </main></>
   );

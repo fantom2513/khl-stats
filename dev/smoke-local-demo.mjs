@@ -21,7 +21,9 @@ const key = offset => {
   return `${String(date.getUTCMonth() + 1).padStart(2, "0")}${String(date.getUTCFullYear()).slice(-2)}`;
 };
 const home = await page("/");
-assert.ok(home.includes("ДЕНЬ") && home.includes("ХОККЕЯ"));
+assert.ok(home.includes("Расписание и результаты") && home.includes("Фильтр по команде"));
+const all = await json(`/api/games?scope=all&month=${key(0)}`);
+assert.ok(["LIVE", "SCHEDULED", "FINISHED"].every(status => all.games.some(game => game.status === status)));
 const nearest = await json("/api/games/nearest");
 assert.ok(nearest.games.some(game => game.status === "LIVE" && game.teamA.id === 34));
 const current = await json(`/api/games?scope=upcoming&month=${key(0)}`);

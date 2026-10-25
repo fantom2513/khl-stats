@@ -39,7 +39,7 @@ export default async function TeamPage({ params }: { params: Promise<{ id: strin
 
   const [upcomingRaw, pastRaw, standings] = await Promise.all([
     prisma.game.findMany({
-      where: { status: "SCHEDULED", OR: [{ teamAId: teamId }, { teamBId: teamId }] },
+      where: { status: { not: "FINISHED" }, OR: [{ teamAId: teamId }, { teamBId: teamId }] },
       orderBy: { date: "asc" },
       select: {
         id: true,
@@ -88,5 +88,5 @@ export default async function TeamPage({ params }: { params: Promise<{ id: strin
 
   const stats = standings.teamsById[teamId];
 
-  return <TeamDetailsView team={team} stats={stats} upcoming={upcoming.map(toGame)} past={past.map(toGame)} />;
+  return <TeamDetailsView team={team} stats={stats} standings={standings.overall.teams} upcoming={upcoming.map(toGame)} past={past.map(toGame)} />;
 }

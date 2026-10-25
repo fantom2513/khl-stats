@@ -43,7 +43,7 @@ export function GameDetailsView({ game, stage, liveClock, standings, recentA, re
   const overtime = overtimeLabel(game.overtime);
   return <>
     <a className="skip-link" href="#match-details">К матчу</a><SiteHeader active={null} />
-    <main id="match-details" className="details-page game-details-page">
+    <main id="match-details" className="flow-main details-page game-details-page">
       <div className="details-breadcrumb"><Link href="/#schedule">← Расписание</Link><span>{stage?.name || "Регулярный чемпионат КХЛ"}</span></div>
       <h1 className="sr-only">{game.teamA.name} — {game.teamB.name}</h1>
       <header className="match-heading">

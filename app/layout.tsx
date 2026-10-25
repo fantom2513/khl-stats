@@ -1,24 +1,13 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { Golos_Text, Oswald } from "next/font/google";
+import { CompanionProvider } from "@/components/companion/Companion";
 import { colors } from "@/lib/theme";
 import { localDemoEnabled } from "@/lib/local-demo";
 import "./globals.css";
 import "./details.css";
-
-const bodyFont = Golos_Text({
-  subsets: ["latin", "cyrillic"],
-  weight: ["400", "500", "600"],
-  variable: "--font-body",
-  display: "swap",
-});
-
-const displayFont = Oswald({
-  subsets: ["latin", "cyrillic"],
-  weight: ["500", "600", "700"],
-  variable: "--font-display",
-  display: "swap",
-});
+import "./material.css";
+import "./material-base.css";
+import "./companion.css";
 
 export const metadata: Metadata = {
   title: "Расписание КХЛ",
@@ -27,7 +16,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="ru" className={`${bodyFont.variable} ${displayFont.variable}`}>
+    <html lang="ru">
       <head>
         <style>{`
           html, body {
@@ -61,7 +50,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           }
         `}</style>
       </head>
-      <body>{children}{localDemoEnabled() && <aside className="local-demo-note" role="status">Локальный режим · тестовые матчи и счёт</aside>}</body>
+      <body className="hockey-app"><CompanionProvider>{children}</CompanionProvider>{localDemoEnabled() && <aside className="local-demo-note" role="status">Локальный режим · тестовые матчи и счёт</aside>}</body>
     </html>
   );
 }
