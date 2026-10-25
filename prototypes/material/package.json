@@ -1,0 +1,13 @@
+{
+  "name": "khl-fluent-throwaway-prototype",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node dev.mjs",
+    "build": "node build.mjs",
+    "test": "node --import tsx --test neko-actor.test.mjs neko-hockey.test.mjs neko-plan.test.mjs pages-model.test.mjs schedule-model.test.mjs standings-view.test.ts"
+  },
+  "dependencies": {
+    "@fluentui/react-components": "9.74.11"
+  }
+}
