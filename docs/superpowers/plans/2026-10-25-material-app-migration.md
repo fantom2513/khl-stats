@@ -49,7 +49,7 @@
 - [x] Review independent changes, run full tests/typecheck/lint and production build (demo is deliberately disabled in production); smoke API and browser routes at mobile/desktop/2K.
 - [x] Copy only production migration files to the managed material-app worktree based on current upstream PR head 651b349; keep separate prototype/model experiments out of PR.
 - [x] Fresh whole-branch review; resolve blockers with regression tests. Commit and fast-forward update the PR's existing source branch, no force-push.
-- [ ] Rewrite upstream PR #7 description/title around the final Material implementation, add verified screenshots and attach PR to this chat. Do not merge.
+- [x] Rewrite upstream PR #7 description/title around the final Material implementation, add verified screenshots and attach PR to this chat. Do not merge.
 
 ## Verification record
 
@@ -58,3 +58,5 @@
 - Browser checked at 390x844 and 2560x1440: schedule filtering and month transition, team/match pages, standings groups, cat hide/show/goal and one actor across navigation.
 - Production compilation and TypeScript pass. Full `next build` cannot finish page-data collection because DATABASE_URL is absent in this environment. No production fixture override was added.
 - Implementation and review completed by the root agent after delegated agents became unavailable. No independent review result is claimed.
+
+Delivery: upstream PR #7 updated to production commit 29dc9fc. GitHub confirms it remains OPEN. The Vercel status is failing with an authorization link; no deployment or merge is claimed.
