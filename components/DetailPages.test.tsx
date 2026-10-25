@@ -37,3 +37,9 @@ test("a goal with a null period keeps the missing-period label", () => {
   const html = renderToStaticMarkup(<GameDetailsView game={game} standings={standings.teamsById} recentA={[]} recentB={[]} />);
   assert.ok(html.includes("Период не указан") && !html.includes("null-й период"));
 });
+
+test("team overview presents actual opponents, away result and neighbouring standings", () => {
+  const team = games[3].teamB;
+  const html = renderToStaticMarkup(<TeamDetailsView team={team} stats={standings.teamsById[team.id]} standings={standings.overall.teams} upcoming={[]} past={[{ ...games[3], visitorScore: 0 }]} />);
+  assert.ok(html.includes("0–3") && html.includes("В гостях") && html.includes("Поражение") && html.includes("Положение в таблице") && html.includes('href="/team/2"') && html.includes('aria-current="true"'));
+});
