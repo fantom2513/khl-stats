@@ -1,0 +1,82 @@
+.team-overview .team-identity-card{padding:6px 0 30px;margin-bottom:28px;border-bottom:1px solid #ffffff12;gap:24px;flex-direction:row;align-items:center}
+.team-overview .team-page-identity{gap:22px}
+.team-overview .team-page-identity>.study-logo{width:88px;height:88px;filter:drop-shadow(0 4px 10px #0004)}
+.team-overview .team-page-identity h1{font-size:34px;line-height:42px;letter-spacing:-.7px;margin:6px 0}
+.team-overview .team-page-identity p{color:#a5a5a5;font-size:12px}
+.team-overview .team-calendar-link{background:none;box-shadow:none;border-color:#ffffff1c;font-size:12px;padding:9px 12px}
+.team-overview .team-calendar-link:hover{background:#ffffff08}
+.team-overview-grid{display:grid;grid-template-columns:minmax(0,1fr) 338px;gap:24px;align-items:start}
+.team-main-column{display:flex;flex-direction:column;gap:24px;min-width:0}
+.team-summary-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px}
+.team-next-match,.team-overview .team-form-card,.team-table-context{min-width:0;border:1px solid #ffffff0d;background:#222;border-radius:10px;box-shadow:0 2px 4px #0003,0 8px 20px #0002;overflow:hidden}
+.team-section-heading{min-height:62px;padding:18px 20px 12px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.team-section-heading h2,.team-overview .team-form-card h2{font-size:15px;line-height:22px;font-weight:600;letter-spacing:0}
+.team-section-heading span{font-size:11px;color:#919191}
+.team-next-match>a{display:block;color:#eee;text-decoration:none;padding:0 18px 14px;border-radius:6px}
+.team-next-match>a:hover{background:#ffffff04}
+.team-next-date{text-align:center;color:#a7a7a7;font-size:11px;line-height:18px;margin:4px 0 20px;text-transform:capitalize}
+.team-next-scoreboard{display:grid;grid-template-columns:minmax(0,1fr) 78px minmax(0,1fr);gap:8px;align-items:start;text-align:center;min-height:91px}
+.team-next-scoreboard>div:not(.team-next-result){display:flex;flex-direction:column;align-items:center;gap:10px;min-width:0}
+.team-next-scoreboard .study-logo{width:44px;height:44px}
+.team-next-scoreboard b{font-size:12px;line-height:17px;font-weight:500;overflow-wrap:anywhere}
+.team-next-result{display:flex;align-items:center;flex-direction:column;gap:5px;padding-top:5px;white-space:nowrap}
+.team-next-result strong{font-size:26px;line-height:34px;letter-spacing:-.5px;font-weight:650;font-variant-numeric:tabular-nums}
+.team-next-result>span{font-size:10px;color:#999;line-height:16px}
+.team-next-result>span.is-live{color:#f18b9b}
+.team-next-open{display:flex;justify-content:center;align-items:center;gap:4px;font-size:11px;color:#b7b7b7;margin-top:14px}
+.team-next-open svg{width:12px;height:12px}
+.team-overview .team-form-card{padding:0;display:flex;flex-direction:column}
+.team-recent-games{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;padding:13px 16px 0}
+.team-recent-game{display:flex;align-items:center;flex-direction:column;gap:9px;color:#c8c8c8;text-decoration:none;min-width:0;border-radius:4px;padding:0 0 6px}
+.team-recent-game:hover{background:#ffffff08}
+.team-recent-game strong{width:100%;max-width:48px;display:flex;align-items:center;justify-content:center;min-height:25px;border-radius:5px;font-size:13px;line-height:20px;font-weight:600;font-variant-numeric:tabular-nums}
+.team-recent-win strong{background:#254b3d;color:#b9e6ce}
+.team-recent-loss strong{background:#5a3038;color:#f0bac4}
+.team-recent-draw strong{background:#454545;color:#ddd}
+.team-recent-game .study-logo{width:30px;height:30px}
+.team-recent-game>span{font-size:10px;line-height:14px;width:100%;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.team-recent-game small{color:#8b8b8b;font-size:9px;line-height:12px;margin-top:-5px}
+.team-overview .team-form-card>p{font-size:10px;line-height:16px;color:#888;padding:12px 16px 15px;margin-top:auto}
+.team-section-empty{padding:22px 20px;color:#aaa;font-size:12px;line-height:20px}
+.team-table-context .team-section-heading{padding:20px 20px 17px;align-items:flex-start}
+.team-table-context .team-section-heading>div{display:flex;flex-direction:column;gap:5px}
+.team-table-context .team-section-heading>a{display:flex;align-items:center;justify-content:center;color:#aaa;width:32px;height:32px;border-radius:5px;margin:-3px -6px 0 0}
+.team-table-context .team-section-heading>a:hover{background:#ffffff09;color:#fff}
+.team-table-context table{border-collapse:collapse;width:100%;font-size:12px;font-variant-numeric:tabular-nums}
+.team-table-context thead{color:#858585;font-size:10px;border-top:1px solid #ffffff09}
+.team-table-context thead th{height:30px;font-weight:500}
+.team-table-context thead th:nth-child(2){text-align:left}
+.team-table-context th abbr{cursor:help;text-decoration:none}
+.team-table-context td{height:55px;text-align:center;color:#aaa;border-top:1px solid #ffffff08}
+.team-table-context td:first-child{width:32px;padding-left:6px;font-size:12px}
+.team-table-context td:nth-last-child(2){width:35px;font-size:11px}
+.team-table-context td:last-child{width:45px;padding-right:7px;font-weight:650;font-size:14px;color:#eee}
+.team-table-context tbody th{font-weight:400;border-top:1px solid #ffffff08}
+.team-table-context tbody th a{display:flex;align-items:center;gap:9px;text-decoration:none;color:#c4c4c4;min-height:54px;text-align:left;line-height:17px;padding:4px 0}
+.team-table-context .study-logo{width:26px;height:26px;flex-shrink:0}
+.team-table-context tr.is-selected-team{background:#b83c5019;box-shadow:inset 3px 0 #cf6070}
+.team-table-context .is-selected-team th a,.team-table-context .is-selected-team td{font-weight:600;color:#fff}
+.team-table-context tbody tr:hover{background:#ffffff06}
+.team-table-context tbody tr.is-selected-team:hover{background:#b83c5029}
+.team-table-note{font-size:10px;line-height:16px;color:#858585;padding:10px 20px}
+.team-table-full{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 20px;color:#ddd;text-decoration:none;font-size:12px;border-top:1px solid #ffffff0a;background:#ffffff02}
+.team-table-full:hover{background:#ffffff07}
+.team-table-full svg{width:14px;height:14px}
+.team-overview .team-side-column{display:flex;gap:18px}
+.team-overview .team-season-card{padding:0;border-radius:10px;background:#1c1c1c;box-shadow:none}
+.team-season-card>summary{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:18px 20px;list-style:none;cursor:pointer;font-size:14px;font-weight:500;color:#c3c3c3}
+.team-season-card>summary::-webkit-details-marker{display:none}
+.team-season-card>summary svg{width:15px;height:15px;transform:rotate(90deg);transition:transform .18s ease}
+.team-season-card[open]>summary svg{transform:rotate(-90deg)}
+.team-overview .team-season-card dl{padding:0 20px;margin:0 0 16px}
+.team-overview .team-games-card{border-radius:10px;background:#222}
+.team-overview .team-games-card>header{background:none;border-bottom:0;padding:20px 22px 0}
+.team-overview .team-games-card>header h2{font-size:17px}
+.team-overview .team-games-card>header span{font-size:11px;color:#888}
+.team-overview .team-games-controls{padding:18px 22px;gap:6px}
+.team-overview .team-games-controls button{font-size:12px;min-height:34px}
+.team-overview a:focus-visible,.team-season-card>summary:focus-visible{outline:2px solid #e88895;outline-offset:-2px}
+@media(min-width:1800px){.team-overview-grid{grid-template-columns:minmax(0,1fr) 374px;gap:28px}.team-summary-grid{gap:24px}.team-next-match>a{padding:0 24px 19px}.team-next-scoreboard .study-logo{width:52px;height:52px}.team-next-scoreboard b{font-size:14px}.team-recent-games{padding:16px 24px 0;gap:10px}.team-recent-game .study-logo{width:36px;height:36px}.team-recent-game>span{font-size:11px}.team-next-result strong{font-size:30px}.team-table-context td{height:61px}}
+@media(max-width:1100px){.team-overview-grid{grid-template-columns:minmax(0,1fr);gap:22px}.team-main-column,.team-overview .team-side-column{display:contents}.team-summary-grid{order:1}.team-table-context{order:2}.team-overview .team-games-card{order:3}.team-overview .team-season-card{order:4}.team-table-context tbody th a{gap:12px}.team-table-context td:first-child{width:42px}.team-table-context td:nth-last-child(2){width:60px}.team-table-context td:last-child{width:65px}}
+@media(max-width:760px){.team-overview .team-identity-card{padding:0 0 22px;margin:0 0 22px;flex-direction:column;align-items:flex-start;gap:18px}.team-overview .team-page-identity{gap:16px;width:100%}.team-overview .team-page-identity>.study-logo{width:64px;height:64px}.team-overview .team-page-identity h1{font-size:27px;line-height:34px;letter-spacing:-.5px;overflow-wrap:anywhere;margin:4px 0}.team-overview .team-page-identity p{font-size:11px;line-height:17px}.team-overview .team-page-identity span{font-size:10px}.team-overview .team-calendar-link{font-size:11px;padding:6px 10px;min-height:36px;margin-left:80px}.team-summary-grid{grid-template-columns:minmax(0,1fr);gap:18px}.team-overview-grid{gap:18px}.team-section-heading{padding:17px 18px 10px;min-height:52px}.team-next-match>a{padding:0 22px 16px}.team-next-date{margin:5px 0 18px}.team-next-scoreboard{grid-template-columns:minmax(0,1fr) 86px minmax(0,1fr);min-height:86px}.team-next-scoreboard .study-logo{width:44px;height:44px}.team-next-scoreboard b{font-size:12px}.team-next-open{margin-top:10px}.team-recent-games{padding:15px 18px 0;gap:8px}.team-recent-game{gap:10px}.team-recent-game strong{max-width:46px;min-height:26px}.team-recent-game .study-logo{width:32px;height:32px}.team-recent-game>span{font-size:10px}.team-overview .team-form-card>p{padding:12px 18px 15px}.team-table-context .team-section-heading{padding:18px}.team-table-context td:first-child{width:30px;padding-left:5px}.team-table-context td:nth-last-child(2){width:36px}.team-table-context td:last-child{width:46px}.team-table-context tbody th a{gap:10px;font-size:12px}.team-overview .team-games-card>header{padding:18px 16px 0}.team-overview .team-games-controls{padding:16px}.team-overview .team-season-card dl{padding:0 18px}.team-season-card>summary{padding:18px}.team-table-note{padding:10px 18px}.team-table-full{padding:14px 18px}}
+@media(prefers-reduced-motion:reduce){.team-season-card>summary svg{transition:none}}

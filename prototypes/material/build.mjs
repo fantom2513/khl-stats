@@ -1,0 +1,11 @@
+import {build} from 'esbuild';
+import {mkdir,writeFile} from 'node:fs/promises';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+const here=path.dirname(fileURLToPath(import.meta.url));
+const root=path.resolve(here,'../..');
+const output=path.join(here,'.dev');
+await mkdir(output,{recursive:true});
+await build({entryPoints:[path.join(here,'dev-entry.tsx')],outfile:path.join(output,'app.js'),bundle:true,minify:true,jsx:'automatic',loader:{'.gif':'dataurl'},define:{'process.env.NODE_ENV':'"production"'},alias:{react:path.join(root,'node_modules/react'),'react-dom':path.join(root,'node_modules/react-dom')}});
+await writeFile(path.join(output,'index.html'),'<!doctype html><html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#222222"><title>На льду · прототип</title><link rel="stylesheet" href="/app.css"></head><body><div id="root"></div><script src="/app.js"></script></body></html>');
+console.log('Prototype production bundle built in '+output);

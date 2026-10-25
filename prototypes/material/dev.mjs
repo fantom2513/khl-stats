@@ -1,0 +1,20 @@
+import {context} from 'esbuild';
+import {mkdir,writeFile} from 'node:fs/promises';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+
+const here=path.dirname(fileURLToPath(import.meta.url));
+const workspace=path.resolve(here,'../..');
+const output=path.join(here,'.dev');
+await mkdir(output,{recursive:true});
+await writeFile(path.join(output,'index.html'),`<!doctype html><html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#222222"><title>На льду · прототип</title><link rel="stylesheet" href="/app.css"></head><body><div id="root"></div><script src="/app.js"></script><script src="/live.js"></script></body></html>`);
+await writeFile(path.join(output,'live.js'),`new EventSource('/esbuild').addEventListener('change', () => location.reload());`);
+const ctx=await context({absWorkingDir:workspace,entryPoints:[path.join(here,'dev-entry.tsx')],outfile:path.join(output,'app.js'),bundle:true,jsx:'automatic',sourcemap:true,loader:{'.gif':'dataurl'},define:{'process.env.NODE_ENV':'"development"'},alias:{react:path.join(workspace,'node_modules/react'),'react-dom':path.join(workspace,'node_modules/react-dom')},logLevel:'info'});
+await ctx.watch();
+const server=await ctx.serve({host:'127.0.0.1',port:5189,servedir:output});
+await writeFile(path.join(output,'server.pid'),String(process.pid));
+console.log(`На льду · http://127.0.0.1:${server.port} · изменения обновляются автоматически`);
+let stopping=false;
+const stop=async()=>{if(stopping)return;stopping=true;await ctx.dispose();process.exit(0)};
+process.on('SIGINT',stop);
+process.on('SIGTERM',stop);
